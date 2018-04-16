@@ -1,0 +1,2 @@
+ID	NAME	SURNAME	DAYS	DOKTOR	GENDER	HORUS	disease	
+3	Ahmet	 tekalan	cuma	yusuf	  erkek	12	cild	

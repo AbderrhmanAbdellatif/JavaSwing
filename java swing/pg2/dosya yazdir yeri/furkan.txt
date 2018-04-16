@@ -1,0 +1,2 @@
+ID	NAME	SURNAME	DAYS	DOKTOR	GENDER	HORUS	disease	
+1234	furkan	ahmet	sail	yusuf	erkek	14	cild	
