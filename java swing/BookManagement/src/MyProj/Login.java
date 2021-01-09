@@ -8,6 +8,15 @@ package MyProj;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,8 +27,17 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    Connection con;
+    
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(this);
+        String url = "jdbc:derby://localhost:1527/sample";
+        try {
+            con = DriverManager.getConnection(url, "app", "app");
+        } catch (SQLException ex) {
+            Logger.getLogger(Long.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -115,7 +133,20 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public int GetPasswordOfUser(int id) {
 
+        try {
+            Statement s = con.createStatement();
+            String q = "SELECT PASSWORD FROM APP.USERS WHERE ID=" + id;
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            return Integer.parseInt(rs.getString("PASSWORD"));
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Admin admin = new Admin();
@@ -131,9 +162,12 @@ public class Login extends javax.swing.JFrame {
             } else if (admin.getId() == Integer.parseInt(jTextField1.getText()) && Integer.parseInt(jPasswordField1.getText()) == admin.getPassword()) {
                 this.setVisible(false);
                 new Wait().setVisible(true);
-            } else {
+            } else if (Integer.parseInt(jPasswordField1.getText()) == GetPasswordOfUser(Integer.parseInt(jTextField1.getText()))) {
                 this.setVisible(false);
                 new UserPanel().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Plases Enter the val ):");
+
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Plases Don't leave Empty ):");
