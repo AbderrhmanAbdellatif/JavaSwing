@@ -5,6 +5,10 @@
  */
 package MyProj;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tmtm6
@@ -115,10 +119,24 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Admin admin = new Admin();
+        try {
+            if (jTextField1.getText().isEmpty() || jPasswordField1.getText().isEmpty()) {
 
-        if (admin.getId() == Integer.parseInt(jTextField1.getText()) && Integer.parseInt(jPasswordField1.getText()) == admin.getPassword()) {
-            this.setVisible(false);
-            new AdminPanel().setVisible(true);
+                try {
+                    throw new NullExceptipn("):");
+                } catch (NullExceptipn ex) {
+                    JOptionPane.showMessageDialog(null, "Plases Don't leave Empty ):");
+                }
+
+            } else if (admin.getId() == Integer.parseInt(jTextField1.getText()) && Integer.parseInt(jPasswordField1.getText()) == admin.getPassword()) {
+                this.setVisible(false);
+                new Wait().setVisible(true);
+            } else {
+                this.setVisible(false);
+                new UserPanel().setVisible(true);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Plases Don't leave Empty ):");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
