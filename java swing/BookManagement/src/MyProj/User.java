@@ -5,12 +5,20 @@
  */
 package MyProj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author tmtm6
  */
 public class User extends Personel{
 
+    public User(int id, int password, String name) {
+        super(id, password, name);
+    }
+    
+
+    
     @Override
     void Print() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

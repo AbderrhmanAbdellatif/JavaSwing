@@ -34,11 +34,11 @@ public class MyBook implements Book {
     }
 
     @Override
-    public void AddBook(int Id, String name, String Author, String publisher, int years, String Lang) {
+    public void AddBook(int Id, String name, String Author, String publisher, int years, String Lang, int PRICE) {
         try {
             Statement s = con.createStatement();
-            String q = "INSERT INTO APP.BOOK (ID, \"NAME\", AUTHOR, PUBLISHER, YEARS, \"LANGUAGE\")"
-                    + " VALUES (" + Id + ", '" + name + "', '" + Author + "', '" + publisher + "', " + years + ",'" + Lang + "')";
+            String q = "INSERT INTO APP.BOOK (ID, \"NAME\", AUTHOR, PUBLISHER, YEARS, \"LANGUAGE\", PRICE)"
+                    + " VALUES (" + Id + ", '" + name + "', '" + Author + "', '" + publisher + "', " + years + ",'" + Lang + "'," + PRICE + ")";
             System.out.println(q);
             s.executeUpdate(q);
             JOptionPane.showMessageDialog(null, "insert successfully!!!");
@@ -70,16 +70,16 @@ public class MyBook implements Book {
     }
 
     @Override
-    public void UpdateBook(int id) {
+    public void UpdateBook(int id, String name, int years) {
 
         try {
             Statement s = con.createStatement();
-            String q = "DELETE FROM APP.BOOK WHERE ID =" + id;
+            String q = "UPDATE APP.BOOK SET \"ID\" = " + id + ", \"NAME\" = '" + name + "', \"YEARS\" = " + years + " WHERE ID =" + id;
             System.out.println(q);
             int update = s.executeUpdate(q);
             System.out.println("update number : " + update);
             if (update == 0) {
-                JOptionPane.showMessageDialog(null, "The book is not found");
+                JOptionPane.showMessageDialog(null, " The book is not found");
 
             } else {
                 JOptionPane.showMessageDialog(null, "Update  successfully !!!");
@@ -90,34 +90,162 @@ public class MyBook implements Book {
     }
 
     @Override
-    public void UpdateBook(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void UpdateBook(int id, int price) {
+
+        try {
+            Statement s = con.createStatement();
+            String q = "UPDATE APP.BOOK SET \"ID\" = " + id + ", PRICE=" + price + " WHERE ID =" + id;
+            System.out.println(q);
+            int update = s.executeUpdate(q);
+            System.out.println("update number : " + update);
+            if (update == 0) {
+                JOptionPane.showMessageDialog(null, " The book is not found");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Update  successfully !!!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void UpdateBook(int id, String name) {
+
+        try {
+            Statement s = con.createStatement();
+            String q = "UPDATE APP.BOOK SET \"ID\" = " + id + ", \"NAME\" = '" + name + "' WHERE ID =" + id;
+            System.out.println(q);
+            int update = s.executeUpdate(q);
+            System.out.println("update number : " + update);
+            if (update == 0) {
+                JOptionPane.showMessageDialog(null, " The book is not found");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Update  successfully !!!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
     public void SearchBook(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK WHERE ID =" + id;
+
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "successfully  Found  Book ");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "The book is not found !!!");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
     public void SearchBook(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK WHERE \"NAME\" ='" + name + "'";
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "successfully  Found  Book ");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "The book is not found !!!");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
     public void ShowBook(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK WHERE ID =" + id;
+
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "successfully  Found  Book ");
+                System.out.println(
+                        rs.getString(1)
+                        + " , " + rs.getString(2)
+                        + " , " + rs.getString(3)
+                        + "  , " + rs.getString(4)
+                        + " ," + rs.getString(5)
+                        + " ," + rs.getString(6)
+                        + " ," + rs.getString(7)
+                        + " ," + rs.getString(8));
+            } else {
+                JOptionPane.showMessageDialog(null, "The book is not found !!!");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
     public void showBooks() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK ";
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                System.out.println(
+                        rs.getString(1)
+                        + " , " + rs.getString(2)
+                        + " , " + rs.getString(3)
+                        + "  , " + rs.getString(4)
+                        + " ," + rs.getString(5)
+                        + " ," + rs.getString(6)
+                        + " ," + rs.getString(7)
+                        + " ," + rs.getString(8)
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public static void main(String[] args) {
         MyBook bookManagement = new MyBook();
         bookManagement.connectedToDB();
-        //bookManagement.AddBook(6,"d","t","c", 4, "TR");
-        bookManagement.DeleteBook(6);
+        //bookManagement.AddBook(6,"d","t","c", 4, "TR",400);
+        //bookManagement.DeleteBook(6);
+        // bookManagement.UpdateBook(6,"Abderrhman",1996);
+        //bookManagement.UpdateBook(6, "aizen");
+        //bookManagement.UpdateBook(1, 9000);
+        //bookManagement.SearchBook(9);
+        //bookManagement.SearchBook("A");
+        //bookManagement.ShowBook(6);
+        bookManagement.showBooks();
+
     }
+
 }

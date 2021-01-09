@@ -10,7 +10,14 @@ package MyProj;
  * @author tmtm6
  */
 public class Admin extends Personel{
-
+  
+    public Admin() {
+        this.setId(1234);
+        this.setName("admin");
+        this.setPassword(1234);
+    }
+    
+   
     @Override
     void Print() {
                 
