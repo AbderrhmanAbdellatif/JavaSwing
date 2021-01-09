@@ -11,10 +11,12 @@ package MyProj;
  */
 public interface Book {
     // db functions 
-    public void AddBook();
-    public void RemoveBook();
-    public void UpdateBook();
-    public void SearchBook();
-    public void ShowBook();
-    public void DeleteBook();
+    public void AddBook(int Id,String name,String Author,String publisher,int pageCounter,int years,String Lang);
+    public void RemoveBook(int id);
+    public void UpdateBook(int id);
+    public void UpdateBook(String name);
+    public void SearchBook(int id);
+    public void SearchBook(String name);
+    public void ShowBook(int id);
+    public void DeleteBook(int id);
 }
