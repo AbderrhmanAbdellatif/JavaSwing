@@ -22,8 +22,6 @@ public abstract class Personel {
 
     public Personel() {
     }
-    
-    
 
     public int getId() {
         return id;
@@ -48,6 +46,7 @@ public abstract class Personel {
     public String getName() {
         return name;
     }
+
     abstract void Print();
-   
+
 }

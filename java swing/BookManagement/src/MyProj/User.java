@@ -15,13 +15,18 @@ public class User extends Personel{
 
     public User(int id, int password, String name) {
         super(id, password, name);
+        this.setId(id);
+        this.setName(name);
+        this.setPassword(password);
     }
     
 
     
     @Override
     void Print() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("the  id is : " + this.getId()
+                + ", name : " + this.getName()
+                + "password : " + this.getPassword());
     }
     
 }
