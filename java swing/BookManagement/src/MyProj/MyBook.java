@@ -54,16 +54,15 @@ public class MyBook implements Book {
     public void DeleteBook(int id) {
         try {
             Statement s = con.createStatement();
-            String q = "DELETE FROM APP.BOOK WHERE ID = " + id;
+            String q = "DELETE FROM APP.BOOK WHERE ID =" + id;
             System.out.println(q);
-            ResultSet rs = s.executeQuery(q);
-            System.out.println(rs.next());
-            if (rs.next()) {
-                s.executeUpdate(q);
-                JOptionPane.showMessageDialog(null, "Remove successfully !!!");
-            } else {
-                JOptionPane.showMessageDialog(null, " this  book is not found!");
+            int update = s.executeUpdate(q);
+            System.out.println("update number : " + update);
+            if (update == 0) {
+                JOptionPane.showMessageDialog(null, "the book is not found");
 
+            } else {
+                JOptionPane.showMessageDialog(null, "Remove successfully !!!");
             }
         } catch (SQLException ex) {
             Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,7 +71,22 @@ public class MyBook implements Book {
 
     @Override
     public void UpdateBook(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {
+            Statement s = con.createStatement();
+            String q = "DELETE FROM APP.BOOK WHERE ID =" + id;
+            System.out.println(q);
+            int update = s.executeUpdate(q);
+            System.out.println("update number : " + update);
+            if (update == 0) {
+                JOptionPane.showMessageDialog(null, "The book is not found");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Update  successfully !!!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -104,6 +118,6 @@ public class MyBook implements Book {
         MyBook bookManagement = new MyBook();
         bookManagement.connectedToDB();
         //bookManagement.AddBook(6,"d","t","c", 4, "TR");
-        bookManagement.DeleteBook(3);
+        bookManagement.DeleteBook(6);
     }
 }
