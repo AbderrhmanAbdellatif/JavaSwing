@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author tmtm6
  */
 public class User extends Personel{
-
+   
     public User(int id, int password, String name) {
         super(id, password, name);
         this.setId(id);
