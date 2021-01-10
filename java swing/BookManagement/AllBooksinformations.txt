@@ -1,18 +1,5 @@
 
 ID	NAME	AUTHOR	PUBLISHER	YEARS	LANGUAGE	PRICE	
 
- 
-6	 
-aizen	 
-t	 
-c	 
-1996	 
-Turkish	 
-400	 
-3	 
-Covid	 
-Abderrhman	 
-oooo	 
-2020	 
-English	 
-300	
+6	aizen	t	c	1996	Turkish	400	 
+3	Covid	Abderrhman	oooo	2020	English	300	 
