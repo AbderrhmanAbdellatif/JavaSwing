@@ -5,40 +5,24 @@
  */
 package MyProj;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import static com.sun.xml.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -55,6 +39,11 @@ public final class UserPanel extends javax.swing.JFrame {
     DefaultListModel defaultListModel = new DefaultListModel();
     DefaultTableModel defaultTableModel = new DefaultTableModel();
     MyBook myBook = new MyBook(con);
+    FileWriter fileWriter = null;
+    BufferedWriter bufferedWriter = null;
+    Scanner scanner = null;
+    FileReader fileReader = null;
+    BufferedReader bufferedReader = null;
 
     /**
      * Creates new form UserPanel
@@ -125,7 +114,10 @@ public final class UserPanel extends javax.swing.JFrame {
         silderShown = new javax.swing.JLabel();
         AuthorNameText = new javax.swing.JTextField();
         AuthorName = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        PrintFile = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtdosya = new javax.swing.JTextField();
+        printAllInformation = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -213,7 +205,23 @@ public final class UserPanel extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Print All Information");
+        PrintFile.setText("Print Selected Book");
+        PrintFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PrintFileActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 0, 255));
+        jLabel3.setText("Name Of File");
+
+        printAllInformation.setText("Print All Informations");
+        printAllInformation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printAllInformationActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,7 +231,7 @@ public final class UserPanel extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(361, 361, 361)
                 .addComponent(NameOFuser, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 438, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,34 +253,41 @@ public final class UserPanel extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(809, 809, 809)
                                 .addComponent(silderShown, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(72, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(153, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(showTheBook, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(AuthorNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(31, 31, 31)
-                                                .addComponent(AuthorName))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(111, 111, 111)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel2)
-                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(25, 25, 25)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(showTheBook, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 772, Short.MAX_VALUE)
-                                .addComponent(LanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(90, 90, 90))))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(AuthorNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(AuthorName))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(111, 111, 111)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(LanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtdosya, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(PrintFile, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(printAllInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +313,7 @@ public final class UserPanel extends javax.swing.JFrame {
                             .addComponent(AuthorName))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -315,8 +330,14 @@ public final class UserPanel extends javax.swing.JFrame {
                             .addComponent(TR))
                         .addGap(18, 18, 18)
                         .addComponent(LanButton)
-                        .addGap(58, 58, 58)
-                        .addComponent(jButton2)
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtdosya, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PrintFile)
+                        .addGap(33, 33, 33)
+                        .addComponent(printAllInformation)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -404,10 +425,10 @@ public final class UserPanel extends javax.swing.JFrame {
 
     private void AuthorNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AuthorNameActionPerformed
         // TODO add your handling code here:
-                try {
+        try {
             // TODO add your handling code here:
             defaultTableModel.setRowCount(0);
-            String q = "SELECT * FROM APP.BOOK WHERE AUTHOR='"+AuthorNameText.getText()+"'";
+            String q = "SELECT * FROM APP.BOOK WHERE AUTHOR='" + AuthorNameText.getText() + "'";
             Statement s = con.createStatement();
             System.out.println(q);
             ResultSet rs = s.executeQuery(q);
@@ -420,8 +441,71 @@ public final class UserPanel extends javax.swing.JFrame {
             Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
+
     }//GEN-LAST:event_AuthorNameActionPerformed
+
+    private void PrintFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrintFileActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            // TODO add your handling code here:
+            if (txtdosya.getText().equals("") || txtdosya.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Don't leave this empty ");
+            } else {
+                fileWriter = new FileWriter(txtdosya.getText() + ".txt");
+                bufferedWriter = new BufferedWriter(fileWriter);
+                for (int i = 0; i < BookTable.getColumnCount(); i++) {
+                    bufferedWriter.write(BookTable.getColumnName(i));
+                    bufferedWriter.write("\t");
+                }
+                for (int i = 0; i < BookTable.getRowCount(); i++) {
+                    bufferedWriter.newLine();
+                    for (int j = 0; j < BookTable.getColumnCount(); j++) {
+                        bufferedWriter.write(String.valueOf(BookTable.getValueAt(i, j)));
+                        bufferedWriter.write("\t");
+                    }
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    fileWriter.close();
+                    JOptionPane.showMessageDialog(this, txtdosya.getText() + " File has been printed");
+                }
+
+                txtdosya.setText(null);
+            }
+        } catch (IOException ex) {
+        }
+    }//GEN-LAST:event_PrintFileActionPerformed
+
+    private void printAllInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAllInformationActionPerformed
+        PrintWriter os = null;
+        try {
+            // TODO add your handling code here:
+            File file = new File("AllBooksinformations.txt");
+            os = new PrintWriter(file);
+            os.println("");
+            for (int col = 0; col < BookTable.getColumnCount(); col++) {
+                os.print(BookTable.getColumnName(col) + "\t");
+            }
+            os.println("");
+            os.println("");
+            for (int row = 0; row < BookTable.getRowCount(); row++) {
+                for (int col = 0; col < BookTable.getColumnCount(); col++) {
+                    //os.print(BookTable.getColumnName(col));
+                    os.print(BookTable.getValueAt(row, col)+"\t");
+                }
+                    os.println(" ");
+                
+            }
+            os.close();
+            System.out.println("Done!");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            os.close();
+        }
+            
+        
+    }//GEN-LAST:event_printAllInformationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -469,15 +553,18 @@ public final class UserPanel extends javax.swing.JFrame {
     private javax.swing.JLabel NameOFuser;
     private javax.swing.JButton PriceButton;
     private javax.swing.JSlider PriceSilder;
+    private javax.swing.JButton PrintFile;
     private javax.swing.JRadioButton TR;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton printAllInformation;
     private javax.swing.JButton showTheBook;
     private javax.swing.JLabel silderShown;
+    private javax.swing.JTextField txtdosya;
     // End of variables declaration//GEN-END:variables
 }
