@@ -6,7 +6,13 @@
 package MyProj;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,14 +24,20 @@ public class AdminPanel extends javax.swing.JFrame {
     /**
      * Creates new form AdminPanel
      */
-     Connection con;
-    DefaultListModel defaultListModel = new DefaultListModel();
+    Connection con;
+    DefaultListModel<Integer> defaultListModel = new DefaultListModel<Integer>();
     DefaultTableModel defaultTableModel = new DefaultTableModel();
     MyBook myBook = new MyBook(con);
-   
+
     public AdminPanel() {
 
         initComponents();
+        jList1.setModel(defaultListModel);
+        for (int i = 100; i < 1000; i++) {
+            defaultListModel.addElement(i);
+        }
+        defaultTableModel.setColumnIdentifiers(new Object[]{"ID", "NAME", "AUTHOR", "PUBLISHER", "YEARS", "LANGUAGE", "PRICE"});
+        BookTable.setModel(defaultTableModel);
         Authortxt.setText(null);
         publishertxt.setText(null);
         Yearstxt.setText(null);
@@ -43,12 +55,12 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        Exit = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         BookTable = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        Update = new javax.swing.JButton();
+        Delete = new javax.swing.JButton();
+        AddBook = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         IDtxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -64,6 +76,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        ShowallBooks = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,10 +90,10 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/MyProj/tg_group_admins.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
 
-        jButton1.setText("<<");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Exit.setText("<<");
+        Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ExitActionPerformed(evt);
             }
         });
 
@@ -99,11 +112,16 @@ public class AdminPanel extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(BookTable);
 
-        jButton2.setText("Update ");
+        Update.setText("Update ");
 
-        jButton3.setText("Delete");
+        Delete.setText("Delete");
 
-        jButton4.setText("Add Book");
+        AddBook.setText("Add Book");
+        AddBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddBookActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("ID:");
 
@@ -121,7 +139,16 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jLabel9.setText("Price:");
 
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jList1.setForeground(new java.awt.Color(0, 204, 255));
         jScrollPane1.setViewportView(jList1);
+
+        ShowallBooks.setText("Show The Books");
+        ShowallBooks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowallBooksActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,7 +158,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(Exit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(547, 547, 547))
@@ -140,15 +167,15 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(67, 67, 67)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(210, 210, 210)
+                                            .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Delete, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(194, 194, 194)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton4)
+                                                .addComponent(AddBook)
                                                 .addGap(27, 27, 27)
                                                 .addComponent(jLabel6))
                                             .addComponent(Years))
@@ -156,19 +183,22 @@ public class AdminPanel extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(Yearstxt, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                                             .addComponent(publishertxt)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(Authortxt, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel3)
-                                                .addComponent(jLabel4))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                                                .addComponent(IDtxt)))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(ShowallBooks)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(Authortxt, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jLabel3)
+                                                    .addComponent(jLabel4))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                                                    .addComponent(IDtxt))))))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(28, 28, 28)
@@ -193,7 +223,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(Exit))
                 .addGap(17, 17, 17)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -213,12 +243,13 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(57, 57, 57)
-                                .addComponent(jButton4))
+                                .addComponent(AddBook))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
+                                .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel5)
-                                    .addComponent(Authortxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(Authortxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ShowallBooks))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
@@ -236,9 +267,9 @@ public class AdminPanel extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3)
+                                .addComponent(Delete)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)))
+                                .addComponent(Update)))
                         .addGap(36, 36, 36)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
@@ -249,11 +280,49 @@ public class AdminPanel extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         new Login().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_ExitActionPerformed
+
+    private void AddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBookActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (IDtxt.getText().isEmpty() || jTextField2.getText().isEmpty() || Authortxt.getText().isEmpty() || publishertxt.getText().isEmpty()) {
+
+                throw new NullExceptipn("Please input the values");
+
+            } else {
+                myBook.AddBook(Integer.parseInt(IDtxt.getText()), jTextField2.getText(), Authortxt.getText(), publishertxt.getText(),
+                        Integer.parseInt(Yearstxt.getText()), jComboBox1.getSelectedItem().toString(), jList1.getSelectedValue());
+            }
+        } catch (NullExceptipn | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please input the values");
+        }
+
+    }//GEN-LAST:event_AddBookActionPerformed
+
+    private void ShowallBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowallBooksActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            defaultTableModel.setRowCount(0);
+            String q = "SELECT * FROM APP.BOOK WHERE ";
+            Statement s = con.createStatement();
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_ShowallBooksActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,15 +360,16 @@ public class AdminPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddBook;
     private javax.swing.JTextField Authortxt;
     private javax.swing.JTable BookTable;
+    private javax.swing.JButton Delete;
+    private javax.swing.JButton Exit;
     private javax.swing.JTextField IDtxt;
+    private javax.swing.JButton ShowallBooks;
+    private javax.swing.JButton Update;
     private javax.swing.JLabel Years;
     private javax.swing.JTextField Yearstxt;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -309,7 +379,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<Integer> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField2;
