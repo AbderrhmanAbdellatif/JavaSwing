@@ -5,6 +5,8 @@
  */
 package MyProj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author tmtm6
@@ -19,5 +21,6 @@ public interface Book {
     public void SearchBook(int id);
     public void SearchBook(String name);
     public void ShowBook(int id);
+    public ArrayList ShowBook();
     public void showBooks();
 }

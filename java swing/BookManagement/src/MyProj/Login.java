@@ -181,8 +181,7 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 new UserPanel().setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Plases Enter the val ):");
-
+                JOptionPane.showMessageDialog(null, "Plases Enter the valid text ):");
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Plases Don't leave Empty ):");

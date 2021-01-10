@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -208,6 +209,27 @@ public class MyBook implements Book {
     }
 
     @Override
+    public ArrayList ShowBook() {
+
+        try {
+            ArrayList<String> BookName = new ArrayList<>();
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK ";
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                BookName.add(rs.getString("NAME"));
+            }
+            return BookName;
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
+    }
+
+    @Override
     public void showBooks() {
         try {
             // TODO add your handling code here:
@@ -244,7 +266,12 @@ public class MyBook implements Book {
         //bookManagement.SearchBook(9);
         //bookManagement.SearchBook("A");
         //bookManagement.ShowBook(6);
-        bookManagement.showBooks();
+        //bookManagement.showBooks();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList = bookManagement.ShowBook();
+        for (String string : arrayList) {
+            System.out.println(string);
+        }
 
     }
 
