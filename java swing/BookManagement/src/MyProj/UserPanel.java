@@ -55,6 +55,7 @@ public final class UserPanel extends javax.swing.JFrame {
     Connection con;
     DefaultListModel defaultListModel = new DefaultListModel();
     DefaultTableModel defaultTableModel = new DefaultTableModel();
+    MyBook myBook = new MyBook(con);
 
     /**
      * Creates new form UserPanel
@@ -70,9 +71,12 @@ public final class UserPanel extends javax.swing.JFrame {
         }
         NameOFuser.setText(GetNameOfUser(Login.IDUser));
         MyBookList.setModel(defaultListModel);
-        for (String Booklist : BooksName) {
+        BooksName = myBook.ShowBook();
+        BooksName.forEach((Booklist) -> {
             defaultListModel.addElement(Booklist);
-        }
+        });
+        defaultTableModel.setColumnIdentifiers(new Object[]{"ID", "NAME", "AUTHOR", "PUBLISHER", "YEARS", "LANGUAGE", "PRICE"});
+        BookTable.setModel(defaultTableModel);
     }
 
     public String GetNameOfUser(int id) {
@@ -99,26 +103,6 @@ public final class UserPanel extends javax.swing.JFrame {
      *
      * @param Userid
      */
-    public void GetNameOfBooks(int Userid) {
-        try {
-            Statement s = con.createStatement();
-            String sql = "SELECT BOOKID FROM APP.USERS where ID=" + Userid;
-            System.out.println(sql);
-            ResultSet rs = s.executeQuery(sql);
-            while (rs.next()) {
-                String sqlGetBookName = "SELECT \"NAME\" FROM APP.BOOK WHERE ID=" + rs.getString("BOOKID");
-                Statement sBookName = con.createStatement();
-                ResultSet rsBookSname = sBookName.executeQuery(sqlGetBookName);
-                while (rsBookSname.next()) {
-                    BooksName.add(rsBookSname.getString("NAME"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -129,6 +113,9 @@ public final class UserPanel extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         MyBookList = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        BookTable = new javax.swing.JTable();
+        showTheBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,14 +131,38 @@ public final class UserPanel extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/MyProj/read-books-that-you-enjoy.jpg"))); // NOI18N
 
-        jLabel2.setText("My List Book");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Available books");
 
+        MyBookList.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        MyBookList.setForeground(new java.awt.Color(0, 153, 204));
         MyBookList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(MyBookList);
+
+        BookTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(BookTable);
+
+        showTheBook.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        showTheBook.setText("Chose");
+        showTheBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTheBookActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,11 +177,16 @@ public final class UserPanel extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showTheBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,11 +203,15 @@ public final class UserPanel extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showTheBook))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -202,6 +222,25 @@ public final class UserPanel extends javax.swing.JFrame {
         this.setVisible(false);
         new Login().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void showTheBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTheBookActionPerformed
+        // TODO add your handling code here:
+        defaultTableModel.setRowCount(0);
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT * FROM APP.BOOK WHERE \"NAME\"='" + MyBookList.getSelectedValue() + "'";
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            if (rs.next()) {
+                defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
+            } else {
+                JOptionPane.showMessageDialog(null, "The book is not found !!!");            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_showTheBookActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,11 +278,14 @@ public final class UserPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BookTable;
     private javax.swing.JList<String> MyBookList;
     private javax.swing.JLabel NameOFuser;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton showTheBook;
     // End of variables declaration//GEN-END:variables
 }

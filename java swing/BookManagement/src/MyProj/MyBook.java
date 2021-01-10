@@ -34,6 +34,17 @@ public class MyBook implements Book {
         }
     }
 
+    public MyBook(Connection con) {
+        
+           String url = "jdbc:derby://localhost:1527/sample";
+        try {
+            this.con = DriverManager.getConnection(url, "app", "app");
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
     @Override
     public void AddBook(int Id, String name, String Author, String publisher, int years, String Lang, int PRICE) {
         try {
@@ -254,25 +265,25 @@ public class MyBook implements Book {
         }
 
     }
+//
+//    public static void main(String[] args) {
+//        MyBook bookManagement = new MyBook();
+//        bookManagement.connectedToDB();
+//        //bookManagement.AddBook(6,"d","t","c", 4, "TR",400);
+//        //bookManagement.DeleteBook(6);
+//        // bookManagement.UpdateBook(6,"Abderrhman",1996);
+//        //bookManagement.UpdateBook(6, "aizen");
+//        //bookManagement.UpdateBook(1, 9000);
+//        //bookManagement.SearchBook(9);
+//        //bookManagement.SearchBook("A");
+//        //bookManagement.ShowBook(6);
+//        //bookManagement.showBooks();
+//        ArrayList<String> arrayList = new ArrayList<>();
+//        arrayList = bookManagement.ShowBook();
+//        for (String string : arrayList) {
+//            System.out.println(string);
+//        }
 
-    public static void main(String[] args) {
-        MyBook bookManagement = new MyBook();
-        bookManagement.connectedToDB();
-        //bookManagement.AddBook(6,"d","t","c", 4, "TR",400);
-        //bookManagement.DeleteBook(6);
-        // bookManagement.UpdateBook(6,"Abderrhman",1996);
-        //bookManagement.UpdateBook(6, "aizen");
-        //bookManagement.UpdateBook(1, 9000);
-        //bookManagement.SearchBook(9);
-        //bookManagement.SearchBook("A");
-        //bookManagement.ShowBook(6);
-        //bookManagement.showBooks();
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList = bookManagement.ShowBook();
-        for (String string : arrayList) {
-            System.out.println(string);
-        }
-
-    }
+//    }
 
 }
