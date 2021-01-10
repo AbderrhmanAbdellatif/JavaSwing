@@ -5,7 +5,6 @@
  */
 package MyProj;
 
-import static com.sun.xml.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.io.BufferedWriter;

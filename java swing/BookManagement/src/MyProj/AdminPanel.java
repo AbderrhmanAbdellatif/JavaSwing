@@ -6,6 +6,7 @@
 package MyProj;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,12 +33,20 @@ public class AdminPanel extends javax.swing.JFrame {
     public AdminPanel() {
 
         initComponents();
+        String url = "jdbc:derby://localhost:1527/sample";
+        try {
+            con = DriverManager.getConnection(url, "app", "app");
+        } catch (SQLException ex) {
+            Logger.getLogger(Long.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         jList1.setModel(defaultListModel);
+        BookTable.setModel(defaultTableModel);
+
         for (int i = 100; i < 1000; i++) {
             defaultListModel.addElement(i);
         }
         defaultTableModel.setColumnIdentifiers(new Object[]{"ID", "NAME", "AUTHOR", "PUBLISHER", "YEARS", "LANGUAGE", "PRICE"});
-        BookTable.setModel(defaultTableModel);
         Authortxt.setText(null);
         publishertxt.setText(null);
         Yearstxt.setText(null);
@@ -56,15 +65,13 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Exit = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        BookTable = new javax.swing.JTable();
         Update = new javax.swing.JButton();
         Delete = new javax.swing.JButton();
         AddBook = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         IDtxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        nametxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         Authortxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -77,6 +84,8 @@ public class AdminPanel extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         ShowallBooks = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        BookTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,24 +106,19 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        BookTable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        BookTable.setForeground(new java.awt.Color(0, 102, 255));
-        BookTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(BookTable);
-
         Update.setText("Update ");
+        Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateActionPerformed(evt);
+            }
+        });
 
         Delete.setText("Delete");
+        Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteActionPerformed(evt);
+            }
+        });
 
         AddBook.setText("Add Book");
         AddBook.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +154,21 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
+        BookTable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        BookTable.setForeground(new java.awt.Color(0, 204, 255));
+        BookTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(BookTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,9 +183,9 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGap(547, 547, 547))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -197,7 +216,7 @@ public class AdminPanel extends javax.swing.JFrame {
                                                     .addComponent(jLabel4))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                                                    .addComponent(nametxt, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                                                     .addComponent(IDtxt))))))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -212,9 +231,7 @@ public class AdminPanel extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(60, 60, 60)
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(48, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -239,7 +256,7 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nametxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(57, 57, 57)
@@ -270,9 +287,9 @@ public class AdminPanel extends javax.swing.JFrame {
                                 .addComponent(Delete)
                                 .addGap(18, 18, 18)
                                 .addComponent(Update)))
-                        .addGap(36, 36, 36)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                        .addGap(45, 45, 45)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("");
@@ -289,12 +306,12 @@ public class AdminPanel extends javax.swing.JFrame {
     private void AddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBookActionPerformed
         // TODO add your handling code here:
         try {
-            if (IDtxt.getText().isEmpty() || jTextField2.getText().isEmpty() || Authortxt.getText().isEmpty() || publishertxt.getText().isEmpty()) {
+            if (IDtxt.getText().isEmpty() || nametxt.getText().isEmpty() || Authortxt.getText().isEmpty() || publishertxt.getText().isEmpty()) {
 
                 throw new NullExceptipn("Please input the values");
 
             } else {
-                myBook.AddBook(Integer.parseInt(IDtxt.getText()), jTextField2.getText(), Authortxt.getText(), publishertxt.getText(),
+                myBook.AddBook(Integer.parseInt(IDtxt.getText()), nametxt.getText(), Authortxt.getText(), publishertxt.getText(),
                         Integer.parseInt(Yearstxt.getText()), jComboBox1.getSelectedItem().toString(), jList1.getSelectedValue());
             }
         } catch (NullExceptipn | NumberFormatException ex) {
@@ -308,7 +325,7 @@ public class AdminPanel extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             defaultTableModel.setRowCount(0);
-            String q = "SELECT * FROM APP.BOOK WHERE ";
+            String q = "SELECT * FROM APP.BOOK ";
             Statement s = con.createStatement();
             System.out.println(q);
             ResultSet rs = s.executeQuery(q);
@@ -323,6 +340,21 @@ public class AdminPanel extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_ShowallBooksActionPerformed
+
+    private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
+        // TODO add your handling code here:
+        int column = 0;
+        String value = BookTable.getValueAt(BookTable.getSelectedRow(), column).toString();
+        myBook.DeleteBook(Integer.parseInt(value));
+        defaultTableModel.removeRow(BookTable.getSelectedRow());
+    }//GEN-LAST:event_DeleteActionPerformed
+
+    private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
+        // TODO add your handling code here:
+        int column = 0;
+        String value = BookTable.getValueAt(BookTable.getSelectedRow(), column).toString();
+        myBook.UpdateBook(Integer.parseInt(value), nametxt.getText());
+    }//GEN-LAST:event_UpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,7 +414,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JList<Integer> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField nametxt;
     private javax.swing.JTextField publishertxt;
     // End of variables declaration//GEN-END:variables
 
