@@ -49,7 +49,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author tmtm6
  */
-public class UserPanel extends javax.swing.JFrame {
+public final class UserPanel extends javax.swing.JFrame {
 
     ArrayList BooksName = new ArrayList();
     Connection con;
@@ -67,6 +67,25 @@ public class UserPanel extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Long.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println(GetNameOfUser(Login.IDUser));
+        NameOFuser.setText(GetNameOfUser(Login.IDUser));
+    }
+
+    public String GetNameOfUser(int id) {
+        try {
+            // TODO add your handling code here:
+            Statement s = con.createStatement();
+            String q = "SELECT \"NAME\" FROM APP.USERS where ID=" + id;
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                return "Welcome : " + rs.getString("NAME");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
@@ -86,7 +105,7 @@ public class UserPanel extends javax.swing.JFrame {
                 String sqlGetBookName = "SELECT \"NAME\" FROM APP.BOOK WHERE ID=" + rs.getString("BOOKID");
                 Statement sBookName = con.createStatement();
                 ResultSet rsBookSname = sBookName.executeQuery(sqlGetBookName);
-                while (rsBookSname.next()) {                    
+                while (rsBookSname.next()) {
                     BooksName.add(rsBookSname.getString("NAME"));
                 }
             }
@@ -100,21 +119,49 @@ public class UserPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        NameOFuser = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        NameOFuser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        NameOFuser.setForeground(new java.awt.Color(0, 51, 204));
+
+        jButton1.setText("<<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 746, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
+                .addComponent(NameOFuser, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(273, 273, 273))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 421, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(NameOFuser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new Login().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,5 +199,7 @@ public class UserPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel NameOFuser;
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }

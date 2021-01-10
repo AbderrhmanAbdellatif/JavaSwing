@@ -150,7 +150,11 @@ public class Login extends javax.swing.JFrame {
             String q = "SELECT PASSWORD FROM APP.USERS WHERE ID=" + id;
             System.out.println(q);
             ResultSet rs = s.executeQuery(q);
-            return Integer.parseInt(rs.getString("PASSWORD"));
+            while (rs.next()) {
+                System.out.println(rs.getString("PASSWORD"));
+                return Integer.parseInt(rs.getString("PASSWORD"));
+
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,6 +177,7 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 new Wait().setVisible(true);
             } else if (Integer.parseInt(jPasswordField1.getText()) == GetPasswordOfUser(Integer.parseInt(jTextField1.getText()))) {
+                IDUser = Integer.parseInt(jTextField1.getText());
                 this.setVisible(false);
                 new UserPanel().setVisible(true);
             } else {
