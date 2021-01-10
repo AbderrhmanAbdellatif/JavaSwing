@@ -24,7 +24,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -107,6 +106,7 @@ public final class UserPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         NameOFuser = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -116,6 +116,16 @@ public final class UserPanel extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         BookTable = new javax.swing.JTable();
         showTheBook = new javax.swing.JButton();
+        PriceSilder = new javax.swing.JSlider();
+        PriceButton = new javax.swing.JButton();
+        AR = new javax.swing.JRadioButton();
+        EN = new javax.swing.JRadioButton();
+        TR = new javax.swing.JRadioButton();
+        LanButton = new javax.swing.JButton();
+        silderShown = new javax.swing.JLabel();
+        AuthorNameText = new javax.swing.JTextField();
+        AuthorName = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -143,6 +153,8 @@ public final class UserPanel extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(MyBookList);
 
+        BookTable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        BookTable.setForeground(new java.awt.Color(0, 102, 255));
         BookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -164,54 +176,148 @@ public final class UserPanel extends javax.swing.JFrame {
             }
         });
 
+        PriceSilder.setMaximum(1000);
+        PriceSilder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                PriceSilderStateChanged(evt);
+            }
+        });
+
+        PriceButton.setText("Show With Price");
+        PriceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PriceButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(AR);
+        AR.setText("Arabic");
+
+        buttonGroup1.add(EN);
+        EN.setText("English");
+
+        buttonGroup1.add(TR);
+        TR.setText("Turkish");
+
+        LanButton.setText("Show With Lanagude");
+        LanButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LanButtonActionPerformed(evt);
+            }
+        });
+
+        AuthorName.setText("Author");
+        AuthorName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AuthorNameActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Print All Information");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(361, 361, 361)
-                        .addComponent(NameOFuser, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showTheBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(361, 361, 361)
+                .addComponent(NameOFuser, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 438, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(785, 785, 785)
+                                .addComponent(PriceButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(735, 735, 735)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(AR)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(EN)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(TR))
+                                    .addComponent(PriceSilder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(809, 809, 809)
+                                .addComponent(silderShown, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(72, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showTheBook, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(AuthorNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(31, 31, 31)
+                                                .addComponent(AuthorName))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(111, 111, 111)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel2)
+                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 772, Short.MAX_VALUE)
+                                .addComponent(LanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(90, 90, 90))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(NameOFuser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showTheBook))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(showTheBook)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AuthorNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AuthorName))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(silderShown, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PriceSilder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(PriceButton)
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AR)
+                            .addComponent(EN)
+                            .addComponent(TR))
+                        .addGap(18, 18, 18)
+                        .addComponent(LanButton)
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -235,12 +341,87 @@ public final class UserPanel extends javax.swing.JFrame {
             if (rs.next()) {
                 defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
             } else {
-                JOptionPane.showMessageDialog(null, "The book is not found !!!");            }
+                JOptionPane.showMessageDialog(null, "The book is not found !!!");
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(MyBook.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_showTheBookActionPerformed
+
+    private void PriceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            defaultTableModel.setRowCount(0);
+            String q = "SELECT * FROM APP.BOOK WHERE PRICE<" + PriceSilder.getValue();
+            Statement s = con.createStatement();
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_PriceButtonActionPerformed
+
+    private void PriceSilderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_PriceSilderStateChanged
+        // TODO add your handling code here:
+        silderShown.setText(String.valueOf(PriceSilder.getValue()));
+    }//GEN-LAST:event_PriceSilderStateChanged
+
+    private void LanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LanButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            defaultTableModel.setRowCount(0);
+            String Lang;
+            if (AR.isSelected()) {
+                Lang = "Arabic";
+            } else if (TR.isSelected()) {
+                Lang = "Turkish";
+            } else {
+                Lang = "English";
+            }
+            String q = "SELECT * FROM APP.BOOK WHERE \"LANGUAGE\"='" + Lang + "'";
+            Statement s = con.createStatement();
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_LanButtonActionPerformed
+
+    private void AuthorNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AuthorNameActionPerformed
+        // TODO add your handling code here:
+                try {
+            // TODO add your handling code here:
+            defaultTableModel.setRowCount(0);
+            String q = "SELECT * FROM APP.BOOK WHERE AUTHOR='"+AuthorNameText.getText()+"'";
+            Statement s = con.createStatement();
+            System.out.println(q);
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next()) {
+                defaultTableModel.addRow(new Object[]{rs.getString("ID"), rs.getString("NAME"), rs.getString("AUTHOR"), rs.getString("PUBLISHER"), rs.getString("YEARS"), rs.getString("LANGUAGE"), rs.getString("PRICE")});
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+    }//GEN-LAST:event_AuthorNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,14 +459,25 @@ public final class UserPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton AR;
+    private javax.swing.JButton AuthorName;
+    private javax.swing.JTextField AuthorNameText;
     private javax.swing.JTable BookTable;
+    private javax.swing.JRadioButton EN;
+    private javax.swing.JButton LanButton;
     private javax.swing.JList<String> MyBookList;
     private javax.swing.JLabel NameOFuser;
+    private javax.swing.JButton PriceButton;
+    private javax.swing.JSlider PriceSilder;
+    private javax.swing.JRadioButton TR;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton showTheBook;
+    private javax.swing.JLabel silderShown;
     // End of variables declaration//GEN-END:variables
 }

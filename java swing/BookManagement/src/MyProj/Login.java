@@ -177,11 +177,12 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 new Wait().setVisible(true);
             } else if (Integer.parseInt(jPasswordField1.getText()) == GetPasswordOfUser(Integer.parseInt(jTextField1.getText()))) {
-                IDUser = Integer.parseInt(jTextField1.getText());
+                IDUser=Integer.parseInt(jTextField1.getText());
                 this.setVisible(false);
                 new UserPanel().setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Plases Enter the valid text ):");
+                JOptionPane.showMessageDialog(null, "Plases Enter the val ):");
+
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Plases Don't leave Empty ):");
